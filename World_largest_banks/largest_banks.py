@@ -82,7 +82,7 @@ log_progress("Runnig queries")
 query_statement1 = f"SELECT * FROM {table_name}"
 query_statement2 = f"SELECT AVG (MC_GBP_Billion) FROM {table_name}"
 query_statement3 = f"SELECT Name from {table_name} LIMIT 5"
-run_query(query_statement=query_statement3, sql_connection= sql_connection)
+run_query(query_statement=query_statement3 , sql_connection= sql_connection)
 
 
 
