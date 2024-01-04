@@ -11,7 +11,6 @@ csv_path ="./largest_banks.csv"
 log_file = "./log.txt"
 table_name = "largest_banks"
 table_attributes = ["Name", "MC_USD_Billion"]
-sql_connection = sqlite3.connect("largest_banks.db")
 csv_rate = "./exchange_rate.csv"
 
 
@@ -25,9 +24,13 @@ def extract (url, table_attributes):
         col = row.find_all('td')
         if len(col)>= 3:
             bank_name = col[1].find_all('a')[1].get_text()
+            ## or I get the same result with the below commented line
+            # bank_name = col[1].find_all('a')[1]['title']
             market_cap = col[2].get_text(strip = True)
+            #or 
+            # market_cap = col[2].contents[0][:-1]
             data_dict ={"Name": bank_name,
-                        "MC_USD_Billion":market_cap}
+                        "MC_USD_Billion": market_cap}
             df1 = pd.DataFrame(data_dict, index = [1])
             df = pd.concat([df, df1], ignore_index=True)
     return df
@@ -44,7 +47,7 @@ def transform(df, csv_rate):
     df['MC_GBP_Billion'] = [np.round(x*currency_dict['GBP'],2) for x in df['MC_USD_Billion']]
     df['MC_EUR_Billion'] = [np.round(x*currency_dict['EUR'],2) for x in df['MC_USD_Billion']]
     df['MC_INR_Billion'] = [np.round(x*currency_dict['INR'],2) for x in df['MC_USD_Billion']]
-    print(f"the value for the fifth largest bank is :  {df['MC_EUR_Billion'][4]}")
+    #print(f"the value for the fifth largest bank is :  {df['MC_EUR_Billion'][4]}")
     return df
 
 def load_to_csv(df, csv_path):
@@ -62,27 +65,31 @@ def log_progress(message):
     current_time = datetime.now()
     date_format = current_time.strftime("%Y-%B-%d-%H:%M:%S")
     with open("./log_file.txt", 'a') as file:
-        file.write(message + " : " + date_format + '\n')
+        file.write(date_format + " : " + message + '\n')
 
 '''Here define the entities and call required functions to get the result'''
-log_progress("Start extracting function")
+log_progress("Preliminaries complete. Initiating ETL process")
+
 df = extract(url, table_attributes)
-log_progress("Extract finished, Transforming startded")
-df.to_csv("./data.csv")
-
+log_progress("Data extraction complete. Initiating Transformation process")
 df = transform(df, csv_rate)
-log_progress("transforming data finished")
-log_progress ("saving transformed csv as file")
+log_progress("Data transformation complete. Initiating Loading process")
 load_to_csv(df, csv_path)
-log_progress("Connecting to database and loading data in db")
-
-
+log_progress("Data saved to CSV file")
+sql_connection = sqlite3.connect("largest_banks.db")
+log_progress("SQL Connection initiated")
 load_to_db(df , sql_connection = sql_connection,table_name= table_name)
-log_progress("Runnig queries")
+log_progress("Data loaded to Database as a table, Executing queries")
+
 query_statement1 = f"SELECT * FROM {table_name}"
 query_statement2 = f"SELECT AVG (MC_GBP_Billion) FROM {table_name}"
 query_statement3 = f"SELECT Name from {table_name} LIMIT 5"
-run_query(query_statement=query_statement3 , sql_connection= sql_connection)
+run_query(query_statement=query_statement1, sql_connection= sql_connection)
+run_query(query_statement=query_statement2, sql_connection= sql_connection)
+run_query(query_statement=query_statement3, sql_connection= sql_connection)
+log_progress("Process Complete")
+sql_connection.close
+log_progress("Server Connection closed")
 
 
 
