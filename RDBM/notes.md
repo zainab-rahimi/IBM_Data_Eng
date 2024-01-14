@@ -42,3 +42,67 @@ Data Science and BI tools like Microsoft Excel, IBM Congos, and MicroStrategy, w
 The method you choose to access the database depends on your needs.
 
 ## Types of sql statements (DDL vs. DML)
+
+**DDL** or Data Definition Language statements are used for defining or changing objects in a database such as tables. And **DML** or Data Manipulation Language statements are used for manipulating or working with data in tables.
+
+## Normalization types
+
+1- First normal form (1NF): 
+
+- each row must be unique
+- each cell should contain single value
+
+2- Second normal form (2NF):
+
+- Separate tables for the values that apply to multiple records
+
+3- Third normal form (3NF):
+
+- Eliminate  columns that are not dependent on the primary key
+
+## Normalization in OLTP and OLAT
+
+- OLTP: Data is read and write frequently -> data is normalized in 3NF or BSNF (Boyce Codd Normal form or BCNF, which is an extension to the third normal form)
+
+- OLAP: Data is mostly read only and database is optimized for read performance -> data is de-normalized in 2NF or 1NF 
+
+##
+The objects in a Relational Database Management System (RDBMS) object hierarchy include:
+
+Instances. This is a logical boundary for a database or set of databases where you organize and isolate database objects and set configuration parameters. 
+
+Relational databases. This is a set of objects used to store, manage, and access data.
+
+Schemas. A user or system schema is a logical grouping of tables, views, nicknames, triggers, functions, packages, and other database objects. Schemas provide naming contexts so that you can distinguish between objects with the same name.
+
+Database partitions. You can split very large tables across multiple partitions to improve performance. 
+
+Database objects. Database objects are the items that exist within the database, such as tables, constraints, indexes, views, and aliases.
+
+Primary key and Foreign Keys have several uses:
+
+Primary keys enforce uniqueness of rows in a table, whereas Foreign keys are columns in a table that contain the same information as the primary key in another table.
+
+You can use primary and foreign keys to create relationships between tables. Relationships between tables reduce redundant data and improve data integrity. 
+
+Indexes provide ordered pointers to rows in tables and can improve the performance of SELECT queries, but can decrease the performance of INSERT, UPDATE, and DELETE queries.
+
+Normalization reduces redundancy and increases consistency of data. There are two forms of normalization:
+
+First normal form (1NF). In this form, the table contains only single values and has no repeating groups.
+
+Second normal form (2NF). This form splits data into multiple tables to reduce redundancy.
+
+You can define six relational model constraints:
+
+Entity integrity constraint. Ensures that the primary key is a unique value that identifies each tuple (or row.)
+
+Referential integrity constraint. Defines relationships between tables.
+
+Semantic integrity constraint. Refers to the correctness of the meaning of the data.
+
+Domain constraint. Specifies the permissible values for a given attribute.
+
+Null constraint. Specifies that attribute values cannot be null.
+
+Check constraint. Limits the values that are accepted by an attribute.
