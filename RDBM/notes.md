@@ -106,3 +106,4 @@ Domain constraint. Specifies the permissible values for a given attribute.
 Null constraint. Specifies that attribute values cannot be null.
 
 Check constraint. Limits the values that are accepted by an attribute.
+
