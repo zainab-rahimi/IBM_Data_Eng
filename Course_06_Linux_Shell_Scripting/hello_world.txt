@@ -1,0 +1,7 @@
+
+
+Hello world 
+This is the second line of the nano file
+This is the third line that has been added later
+this is the line that has been added later
+echo "this can be done too!"
