@@ -1,0 +1,1 @@
+SOURCE world_mysql_script.sql;
