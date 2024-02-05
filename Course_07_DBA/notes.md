@@ -101,5 +101,60 @@ The two parameters in the command above,
 
 Restroe a full backup `mysql --host=127.0.0.1 --port=3306 --user=root --password < world_mysql_full_backup.sql`
 
+#### Establishing a performance baseling
+
+To determine whether your database system is performing at its most optimal, you first need to establish a baseline for your database system’s performance. To do this, you need to record key performance metrics at regular intervals over a given time period. Once you have established a database system performance baseline, you can then compare these baseline statistics with the performance of your database system at any given time. If your comparison indicates that the current performance measurements are either significantly above or below the performance baseline, then these can become potential targets for further analysis and investigation. From those investigations, you might then determine that some database elements need reconfiguring or optimizing. Even when things are working well, and as expected, you can still use your performance baseline data to help you determine operational norms, such as your peak and off-peak hours of operation, typical response times for running queries and processing batch commands, and the time taken to perform database backup and restore operations.
+The following areas typically have the greatest effect on the performance of your database system:
+
+- System hardware resources
+- network architecture
+- operating system
+- database applications
+ and client applications.
 
 
+#### Troubleshooting common issues
+
+The most common problems encountered with databases are caused by poor performance, improper configuration, or poor connectivity.
+
+- Poor performance is typically caused by high latency for disk reads and writes, slow processing time by the server, or a poor connection between the client and server.
+- Server configuration issues, such as inadequate hardware resources or misconfigured settings, can significantly impact performance. 
+- Some of the most common connectivity problems are not being able to connect to the database server, the database server or instance not running properly, and client login credentials being incorrect. 
+- And finally... Performance monitoring, reports, and server and database logs can help identify performance bottlenecks and determine the best way to correct them.
+
+
+#### Troublshooting in postgres
+
+Tip: to find the location of the conf file in your database you can use the command `SHOW config_file` and you will find the directory for the config file in the postgres database then you can navigate to the directory and edit config file with a text editor.
+![directory_config_file](Week4/directory_conf.png)
+
+you can view server log with the command `SHOW log_directory;`
+
+To inspect how long each query or command takes, enable the timer with the following command in the CLI:`\timing`
+
+IF you get the error that you don't have the permissions to access the directory you need to switch to postgres user, This is likely because the PostgreSQL directories are owned by the postgres user for security reasons.
+
+You can use sudo to become postgres user and then navigate to the directory
+
+- `sudo -u postgres -i`
+then try to navigate to the directory to access log files or config files in postgres 
+`cd /var/lib/postgresql/10/main/log`  for log files & for config files `cd /etc/postgresql/10/main`. 
+
+if you don't know the directory for config or log file you can ask directry from the postgres terminal `SHOW config_file`
+
+
+##### mysql 
+
+To use a sql file as a source of database in mysql use the source command followed by the sql file_path `source sql_file_path` here is an example how to pass the dirctory of the file in mysql cli
+`source F:/repos/Data Eng/Course_07_DBA/Week4/sakila_mysql_dump.sql;`
+
+![source_command_mysql](Week4/source_mysql.png)
+
+#### Mysql backup process for automation
+
+To automate the backup process we need to write a shell script that does the followings:
+
+- Write the database into a sql file created with timestamp using `mysqldump` command. 
+- zip the sql file into zipfile using `gzip` command 
+- remove the sql file after zipping using `rm` command
+- delete the backup after 30 days.
