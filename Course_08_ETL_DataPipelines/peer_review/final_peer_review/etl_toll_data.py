@@ -64,7 +64,7 @@ consolidate_data = BashOperator(
     /home/project/airflow/dags/finalassignments/staging/fixed_width_data.csv > \
     /home/project/airflow/dags/finalassignments/staging/extracted_data.csv',
 )
-
+    
 # Transform and load the data (Task1.8)
 transform_data = BashOperator(
     task_id='transform_data',
@@ -75,5 +75,4 @@ transform_data = BashOperator(
 
 # Define the task pipeline (Task 1.9)
 unzip_data >> extract_data_from_csv >> extract_data_from_tsv >> extract_data_from_fixed_width >> consolidate_data >> transform_data
-
 
